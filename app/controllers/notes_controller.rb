@@ -14,11 +14,20 @@ class NotesController < ApplicationController
   def create
     @note = Note.new
     @note.content = params[:note][:content]
-
     if @note.save
-      redirect_to notes_url, notice: "Note created successfully."
+      respond_to do |format|
+        format.html do
+          redirect_to notes_url, notice: "Note created successfully."
+        end
+        format.js
+      end
     else
-      render 'new'
+      respond_to do |format|
+        format.html do
+          render 'new'
+        end
+        format.js { render js: 'alert("NOOooooo."); '}
+      end
     end
   end
 
@@ -41,6 +50,20 @@ class NotesController < ApplicationController
     @note = Note.find_by(id: params[:id])
     @note.destroy
 
-    redirect_to notes_url, notice: "Note deleted."
+    respond_to do |format|
+      format.html do
+        redirect_to notes_url, notice: "Note deleted."
+      end
+      format.js
+    end
+
   end
 end
+
+
+
+
+
+
+
+
